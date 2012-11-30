@@ -1,2 +1,5 @@
 
-main = putStrLn "foo"
+import Database.SQLite.Simple
+
+main =
+  putStrLn "foo"
