@@ -18,11 +18,12 @@ executable db-util
                    , sqlite-simple
                    , time
 
-executable bench-sqlite-simple
+executable bench
   hs-source-dirs:    haskell
   main-is:           Main.hs
   build-depends:     base == 4.5.*
                    , optparse-applicative >= 0.4
                    , sqlite-simple
+                   , direct-sqlite
                    , text
                    , criterion
