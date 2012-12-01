@@ -47,15 +47,15 @@ static void query(sqlite3* conn)
 
 int main(void)
 {
-    int N = 1000;
+    int ITERS = 1000;
     int i;
     sqlite3* conn;
 
     GUARD(sqlite3_open("../test.db", &conn), "open failed");
 
-    printf("performing %d x SELECTs (each returning 10000 rows)\n", N);
+    printf("performing %d x SELECTs (each returning 10000 rows)\n", ITERS);
 
-    for (i = 0; i < N; i++)
+    for (i = 0; i < ITERS; i++)
         query(conn);
 
     sqlite3_close(conn);
