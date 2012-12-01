@@ -1,0 +1,3 @@
+.
+sqlite-simple/
+direct-sqlite/

@@ -2,3 +2,5 @@ cabal-dev/
 dist/
 test.db
 native/benchmark
+sqlite-simple/
+direct-sqlite/

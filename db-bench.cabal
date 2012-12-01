@@ -19,7 +19,7 @@ executable db-util
                    , time
 
 executable bench-sqlite-simple
-  hs-source-dirs:    sqlite-simple
+  hs-source-dirs:    haskell
   main-is:           Main.hs
   build-depends:     base == 4.5.*
                    , optparse-applicative >= 0.4
