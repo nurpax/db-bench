@@ -16,6 +16,7 @@ executable db-util
                    , optparse-applicative >= 0.4
                    , text
                    , sqlite-simple
+                   , mysql-simple
                    , time
 
 executable bench
@@ -25,5 +26,6 @@ executable bench
                    , optparse-applicative >= 0.4
                    , sqlite-simple
                    , direct-sqlite
+                   , mysql-simple
                    , text
                    , criterion
