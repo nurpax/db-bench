@@ -21,6 +21,14 @@ selectInts conn = do
   rows <- S.query_ conn "SELECT id FROM testdata" :: IO [(S.Only Int)]
   checksum $ foldl' (\acc (S.Only v) -> v + acc) 0 rows
 
+
+benchSqliteSimple :: IO ()
+benchSqliteSimple =
+  bracket (S.open "test.db") S.close go
+  where
+    go conn =
+      defaultMainWith defaultConfig (return ()) [bench "sqlite-simple: SELECT Ints" $ selectInts conn]
+
 -----------------------------------------------------------
 
 sumRowsColumnInt64 :: DS.Statement -> Int64 -> IO Int64
@@ -47,23 +55,23 @@ sumRowsColumns stmt !acc = do
 
 selectIntsDS :: DS.Database -> IO ()
 selectIntsDS conn = do
-  let n = 10000
   stmt <- DS.prepare conn "SELECT id FROM testdata"
---  sum <- sumRowsColumnInt64 stmt 0
   sum <- sumRowsColumns stmt 0
   DS.finalize stmt
   checksum (fromIntegral sum)
 
-benchSqliteSimple :: IO ()
-benchSqliteSimple =
-  bracket (S.open "test.db") S.close go
-  where
-    go conn =
-      defaultMainWith defaultConfig (return ()) [bench "sqlite-simple: SELECT Ints" $ selectInts conn]
+selectIntsInt64DS :: DS.Database -> IO ()
+selectIntsInt64DS conn = do
+  stmt <- DS.prepare conn "SELECT id FROM testdata"
+  sum <- sumRowsColumnInt64 stmt 0
+  DS.finalize stmt
+  checksum (fromIntegral sum)
 
 benchDirectSqlite3 :: IO ()
 benchDirectSqlite3 =
   bracket (DS.open "test.db") DS.close go
   where
     go conn =
-      defaultMainWith defaultConfig (return ()) [bench "direct-sqlite: SELECT Ints" $ selectIntsDS conn]
+      defaultMainWith defaultConfig (return ())
+        [ bench "direct-sqlite: SELECT Ints (columns)" $ selectIntsDS conn
+        , bench "direct-sqlite: SELECT Ints (columnInt64)" $ selectIntsInt64DS conn]
