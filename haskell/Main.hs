@@ -11,8 +11,9 @@ import qualified Database.SQLite.Simple as S
 import qualified Database.SQLite3 as DS
 import           Options.Applicative
 
-import           Util
+import qualified Mysql
 import qualified Sqlite
+import           Util
 
 main :: IO()
 main = do
@@ -20,3 +21,5 @@ main = do
   Sqlite.benchSqliteSimple
   putStrLn "*** Benchmark direct-sqlite Database.SQLite3"
   Sqlite.benchDirectSqlite3
+  putStrLn "*** Benchmark direct-sqlite Database.MySQL.Simple"
+  Mysql.benchMysqlSimple

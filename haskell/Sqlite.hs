@@ -13,7 +13,6 @@ import           Data.Int
 import           Data.List
 import qualified Database.SQLite.Simple as S
 import qualified Database.SQLite3 as DS
-import           Options.Applicative
 
 import           Util
 
@@ -60,11 +59,11 @@ benchSqliteSimple =
   bracket (S.open "test.db") S.close go
   where
     go conn =
-      defaultMainWith defaultConfig (return ()) [bench "SELECT Ints" $ selectInts conn]
+      defaultMainWith defaultConfig (return ()) [bench "sqlite-simple: SELECT Ints" $ selectInts conn]
 
 benchDirectSqlite3 :: IO ()
 benchDirectSqlite3 =
   bracket (DS.open "test.db") DS.close go
   where
     go conn =
-      defaultMainWith defaultConfig (return ()) [bench "SELECT Ints" $ selectIntsDS conn]
+      defaultMainWith defaultConfig (return ()) [bench "direct-sqlite: SELECT Ints" $ selectIntsDS conn]
