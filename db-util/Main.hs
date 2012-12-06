@@ -4,8 +4,9 @@ import           Control.Applicative
 import           Options.Applicative
 
 import           Types
-import qualified Sqlite
 import qualified Mysql
+import qualified Psql
+import qualified Sqlite
 
 
 options :: Parser Opts
@@ -15,7 +16,7 @@ options = Opts
                       & help "Output database file or database name")
        <*> strOption (long "db"
                       & metavar "DB"
-                      & help "Database implementation (sqlite or mysql)")
+                      & help "Database implementation (sqlite, psql or mysql)")
 
 main = do
   options <- execParser $
@@ -25,4 +26,5 @@ main = do
   case dbImpl options of
     "sqlite" -> Sqlite.gen options
     "mysql"  -> Mysql.gen options
+    "psql"  -> Psql.gen options
     other    -> error ("uknown database type: "++other)

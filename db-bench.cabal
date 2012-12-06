@@ -17,6 +17,7 @@ executable db-util
                    , text
                    , sqlite-simple
                    , mysql-simple
+                   , postgresql-simple
                    , time
 
 executable bench
@@ -27,5 +28,6 @@ executable bench
                    , sqlite-simple
                    , direct-sqlite
                    , mysql-simple
+                   , postgresql-simple
                    , text
                    , criterion
