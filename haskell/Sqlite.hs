@@ -1,4 +1,4 @@
-{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE OverloadedStrings, BangPatterns #-}
 
 module Sqlite (
     benchSqliteSimple
@@ -24,7 +24,7 @@ selectInts conn = do
 -----------------------------------------------------------
 
 sumRowsColumnInt64 :: DS.Statement -> Int64 -> IO Int64
-sumRowsColumnInt64 stmt acc = do
+sumRowsColumnInt64 stmt !acc = do
   r <- DS.step stmt
   case r of
     DS.Row ->
@@ -35,7 +35,7 @@ sumRowsColumnInt64 stmt acc = do
       return acc
 
 sumRowsColumns :: DS.Statement -> Int64 -> IO Int64
-sumRowsColumns stmt acc = do
+sumRowsColumns stmt !acc = do
   r <- DS.step stmt
   case r of
     DS.Row ->
