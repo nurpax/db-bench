@@ -29,5 +29,7 @@ executable bench
                    , direct-sqlite
                    , mysql-simple
                    , postgresql-simple
+                   , HDBC
+                   , HDBC-sqlite3
                    , text
                    , criterion

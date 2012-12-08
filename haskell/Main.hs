@@ -11,6 +11,7 @@ import           Options.Applicative
 import qualified Mysql
 import qualified Psql
 import qualified Sqlite
+import qualified Hdbc
 import           Util
 
 main :: IO()
@@ -19,3 +20,4 @@ main = do
   Sqlite.benchDirectSqlite3
   Mysql.benchMysqlSimple
   Psql.benchPostgresqlSimple
+  Hdbc.benchHdbcSqlite3
