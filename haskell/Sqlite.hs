@@ -1,4 +1,4 @@
-{-# LANGUAGE OverloadedStrings, BangPatterns #-}
+{-# LANGUAGE OverloadedStrings, BangPatterns, ScopedTypeVariables #-}
 
 module Sqlite (
     benchSqliteSimple
@@ -21,13 +21,22 @@ selectInts conn = do
   rows <- S.query_ conn "SELECT id FROM testdata" :: IO [(S.Only Int)]
   checksum $ foldl' (\acc (S.Only v) -> v + acc) 0 rows
 
+selectIntsFold :: S.Connection -> IO ()
+selectIntsFold conn = do
+  val <- S.fold_ conn "SELECT id FROM testdata" 0 sumValues
+  checksum val
+  where
+    sumValues acc (S.Only (v :: Int)) = return $ acc + v
+
 
 benchSqliteSimple :: IO ()
 benchSqliteSimple =
   bracket (S.open "test.db") S.close go
   where
     go conn =
-      defaultMainWith defaultConfig (return ()) [bench "sqlite-simple: SELECT Ints" $ selectInts conn]
+      defaultMainWith defaultConfig (return ())
+        [ bench "sqlite-simple: SELECT Ints" $ selectInts conn
+        , bench "sqlite-simple: SELECT Ints (fold)" $ selectIntsFold conn]
 
 -----------------------------------------------------------
 
