@@ -4,3 +4,4 @@ test.db
 native/benchmark
 sqlite-simple/
 direct-sqlite/
+python/venv/
