@@ -26,7 +26,7 @@ selectIntsFold conn = do
   val <- S.fold_ conn "SELECT id FROM testdata" 0 sumValues
   checksum val
   where
-    sumValues acc (S.Only (v :: Int)) = return $ acc + v
+    sumValues !acc (S.Only (v :: Int)) = return $ acc + v
 
 
 benchSqliteSimple :: IO ()
