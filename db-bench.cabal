@@ -1,7 +1,7 @@
 name:                db-bench
 version:             0.1.0.0
 synopsis:            Haskell database performance suite
-homepage:            http://nurpax.github.com/db-bench
+homepage:            http://github.com/nurpax/db-bench
 license:             MIT
 author:              Janne Hellsten
 maintainer:          jjhellst@gmail.com
