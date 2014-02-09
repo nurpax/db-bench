@@ -32,4 +32,5 @@ executable bench
                    , HDBC
                    , HDBC-sqlite3
                    , text
+                   , time
                    , criterion

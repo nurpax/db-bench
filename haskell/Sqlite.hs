@@ -5,6 +5,7 @@ module Sqlite (
   , benchDirectSqlite3
   ) where
 
+import           Control.Applicative
 import           Control.Monad
 import           Control.Exception (bracket)
 import           Criterion.Config (defaultConfig)
@@ -13,8 +14,15 @@ import           Data.Int
 import           Data.List
 import qualified Database.SQLite.Simple as S
 import qualified Database.SQLite3 as DS
+import           Data.Time (UTCTime)
+import qualified Data.Text as T
 
 import           Util
+
+data UtcRow = UtcRow Int UTCTime Int Int
+
+instance S.FromRow UtcRow where
+  fromRow = UtcRow <$> S.field <*> S.field <*> S.field <*> S.field
 
 selectInts :: S.Connection -> IO ()
 selectInts conn = do
@@ -28,6 +36,11 @@ selectIntsFold conn = do
   where
     sumValues !acc (S.Only (v :: Int)) = return $ acc + v
 
+selectUTCTimeInts :: S.Connection -> IO ()
+selectUTCTimeInts conn = do
+  rows <- S.query_ conn "SELECT id,time,ex1_id,ex2_id FROM testdata_utc" :: IO [UtcRow]
+  checksum $ foldl' (\acc (UtcRow v _d _ex1 _ex2) -> v + acc) 0 rows
+
 
 benchSqliteSimple :: IO ()
 benchSqliteSimple =
@@ -36,7 +49,8 @@ benchSqliteSimple =
     go conn =
       defaultMainWith defaultConfig (return ())
         [ bench "sqlite-simple: SELECT Ints" $ selectInts conn
-        , bench "sqlite-simple: SELECT Ints (fold)" $ selectIntsFold conn]
+        , bench "sqlite-simple: SELECT Ints (fold)" $ selectIntsFold conn
+        , bench "sqlite-simple: SELECT UTCTime, ints" $ selectUTCTimeInts conn]
 
 -----------------------------------------------------------
 
