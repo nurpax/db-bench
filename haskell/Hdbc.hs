@@ -5,7 +5,7 @@ module Hdbc (
 
 import           Control.Monad
 import           Control.Exception (bracket)
-import           Criterion.Config (defaultConfig)
+import           Criterion.Main.Options
 import           Criterion.Main
 import           Data.Int
 import           Data.List
@@ -24,4 +24,4 @@ benchHdbcSqlite3 =
   bracket (connectSqlite3 "test.db") disconnect go
   where
     go conn =
-      defaultMainWith defaultConfig (return ()) [bench "hdbc-sqlite3: SELECT Ints" $ selectInts conn]
+      defaultMainWith defaultConfig [bench "hdbc-sqlite3: SELECT Ints" (nfIO (selectInts conn))]

@@ -6,7 +6,7 @@ module Mysql (
 
 import           Control.Monad
 import           Control.Exception (bracket)
-import           Criterion.Config (defaultConfig)
+import           Criterion.Main.Options
 import           Criterion.Main
 import           Data.Int
 import           Data.List
@@ -24,4 +24,4 @@ benchMysqlSimple =
   bracket (MS.connect MS.defaultConnectInfo { MS.connectDatabase = "dbbench" }) MS.close go
   where
     go conn =
-      defaultMainWith defaultConfig (return ()) [bench "mysql-simple: SELECT Ints" $ selectInts conn]
+      defaultMainWith defaultConfig [bench "mysql-simple: SELECT Ints" (nfIO (selectInts conn))]

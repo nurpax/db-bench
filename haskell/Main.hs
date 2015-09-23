@@ -2,7 +2,7 @@
 
 import           Control.Monad
 import           Control.Exception (bracket)
-import           Criterion.Config (defaultConfig)
+import           Criterion.Monad
 import           Criterion.Main
 import           Data.Int
 import           Data.List
@@ -14,7 +14,7 @@ import qualified Sqlite
 import qualified Hdbc
 import           Util
 
-main :: IO()
+main :: IO ()
 main = do
   Sqlite.benchSqliteSimple
   Sqlite.benchDirectSqlite3

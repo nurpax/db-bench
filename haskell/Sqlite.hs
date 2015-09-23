@@ -8,7 +8,7 @@ module Sqlite (
 import           Control.Applicative
 import           Control.Monad
 import           Control.Exception (bracket)
-import           Criterion.Config (defaultConfig)
+import           Criterion.Main.Options
 import           Criterion.Main
 import           Data.Int
 import           Data.List
@@ -47,10 +47,10 @@ benchSqliteSimple =
   bracket (S.open "test.db") S.close go
   where
     go conn =
-      defaultMainWith defaultConfig (return ())
-        [ bench "sqlite-simple: SELECT Ints" $ selectInts conn
-        , bench "sqlite-simple: SELECT Ints (fold)" $ selectIntsFold conn
-        , bench "sqlite-simple: SELECT UTCTime, ints" $ selectUTCTimeInts conn]
+      defaultMainWith defaultConfig
+        [ bench "sqlite-simple: SELECT Ints" (nfIO (selectInts conn))
+        , bench "sqlite-simple: SELECT Ints (fold)" (nfIO (selectIntsFold conn))
+        , bench "sqlite-simple: SELECT UTCTime, ints" (nfIO (selectUTCTimeInts conn))]
 
 -----------------------------------------------------------
 
@@ -95,6 +95,6 @@ benchDirectSqlite3 =
   bracket (DS.open "test.db") DS.close go
   where
     go conn =
-      defaultMainWith defaultConfig (return ())
-        [ bench "direct-sqlite: SELECT Ints (columns)" $ selectIntsDS conn
-        , bench "direct-sqlite: SELECT Ints (columnInt64)" $ selectIntsInt64DS conn]
+      defaultMainWith defaultConfig
+        [ bench "direct-sqlite: SELECT Ints (columns)" (nfIO (selectIntsDS conn))
+        , bench "direct-sqlite: SELECT Ints (columnInt64)" (nfIO (selectIntsInt64DS conn))]

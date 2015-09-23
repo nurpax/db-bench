@@ -6,7 +6,7 @@ module Psql (
 
 import           Control.Monad
 import           Control.Exception (bracket)
-import           Criterion.Config (defaultConfig)
+import           Criterion.Main.Options
 import           Criterion.Main
 import           Data.Int
 import           Data.List
@@ -27,4 +27,4 @@ benchPostgresqlSimple =
               , PS.connectPassword = "dbbench" }) PS.close go
   where
     go conn =
-      defaultMainWith defaultConfig (return ()) [bench "postgresql-simple: SELECT Ints" $ selectInts conn]
+      defaultMainWith defaultConfig [bench "postgresql-simple: SELECT Ints" (nfIO (selectInts conn))]
